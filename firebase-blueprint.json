@@ -1,0 +1,122 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Profil guru pengguna aplikasi Kreasikertas.Studio",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Firebase Auth UID"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email guru"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Nama tampilan pengguna"
+        },
+        "schoolName": {
+          "type": "string",
+          "description": "Nama instansi sekolah guru"
+        },
+        "teacherName": {
+          "type": "string",
+          "description": "Nama guru / kreator"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Waktu pembuatan profil"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Waktu pembaruan profil"
+        }
+      },
+      "required": ["id", "email", "createdAt"]
+    },
+    "SavedPrompt": {
+      "title": "SavedPrompt",
+      "description": "Prompt edukasi yang disimpan oleh guru",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID unik prompt"
+        },
+        "userId": {
+          "type": "string",
+          "description": "UID pemilik prompt"
+        },
+        "title": {
+          "type": "string",
+          "description": "Judul prompt edukasi"
+        },
+        "category": {
+          "type": "string",
+          "description": "Kategori prompt"
+        },
+        "promptText": {
+          "type": "string",
+          "description": "Isi lengkap instruksi prompt Bahasa Indonesia"
+        },
+        "schoolName": {
+          "type": "string",
+          "description": "Nama sekolah"
+        },
+        "teacherName": {
+          "type": "string",
+          "description": "Nama guru"
+        },
+        "grade": {
+          "type": "string",
+          "description": "Tingkat kelas siswa"
+        },
+        "subject": {
+          "type": "string",
+          "description": "Mata pelajaran"
+        },
+        "theme": {
+          "type": "string",
+          "description": "Tema materi"
+        },
+        "questionCount": {
+          "type": "number",
+          "description": "Jumlah soal"
+        },
+        "paperSize": {
+          "type": "string",
+          "description": "Ukuran kertas (Legal / A4 / A5)"
+        },
+        "orientation": {
+          "type": "string",
+          "description": "Orientasi kertas (Portrait / Landscape)"
+        },
+        "language": {
+          "type": "string",
+          "description": "Bahasa konten"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp pembuatan"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp pembaruan"
+        }
+      },
+      "required": ["id", "userId", "title", "category", "promptText"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Menyimpan data profil akun guru"
+    },
+    "/users/{userId}/savedPrompts/{promptId}": {
+      "schema": "SavedPrompt",
+      "description": "Menyimpan koleksi prompt favorit per guru"
+    }
+  }
+}

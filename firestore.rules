@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global deny-by-default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Connection testing endpoint
+    match /test/{docId} {
+      allow read: if true;
+    }
+
+    // User profile document
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId)
+        && incoming().id == userId
+        && incoming().email is string
+        && incoming().email.size() <= 254;
+      allow update: if isOwner(userId)
+        && incoming().id == existing().id
+        && incoming().email == existing().email;
+      allow delete: if isOwner(userId);
+
+      // User saved prompts subcollection
+      match /savedPrompts/{promptId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && isValidId(promptId)
+          && incoming().userId == userId
+          && incoming().title is string
+          && incoming().title.size() <= 300
+          && incoming().promptText is string
+          && incoming().promptText.size() <= 50000;
+        allow update: if isOwner(userId)
+          && isValidId(promptId)
+          && incoming().userId == existing().userId
+          && incoming().id == existing().id
+          && incoming().promptText is string
+          && incoming().promptText.size() <= 50000;
+        allow delete: if isOwner(userId) && isValidId(promptId);
+      }
+    }
+  }
+}

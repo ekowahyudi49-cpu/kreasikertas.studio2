@@ -1,0 +1,6 @@
+{
+  "name": "KREASIKERTAS.STUDIO",
+  "description": "Generator Prompt Edukasi Bahasa Indonesia Premium untuk Guru: Worksheet, Papercraft, LKPD, Flashcard, dan Craft Kertas Kreatif.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
